@@ -1673,8 +1673,8 @@ namespace TotemAndroid
 			// aapt resource value: 0x7f0b0055
 			public const int deleteButton = 2131427413;
 			
-			// aapt resource value: 0x7f0b008b
-			public const int deleteItem = 2131427467;
+			// aapt resource value: 0x7f0b008c
+			public const int deleteItem = 2131427468;
 			
 			// aapt resource value: 0x7f0b0084
 			public const int detail = 2131427460;
@@ -1687,6 +1687,9 @@ namespace TotemAndroid
 			
 			// aapt resource value: 0x7f0b0060
 			public const int eigenschap = 2131427424;
+			
+			// aapt resource value: 0x7f0b0089
+			public const int eigenschap_Title = 2131427465;
 			
 			// aapt resource value: 0x7f0b006c
 			public const int eigenschappen = 2131427436;
@@ -1715,17 +1718,17 @@ namespace TotemAndroid
 			// aapt resource value: 0x7f0b0038
 			public const int expanded_menu = 2131427384;
 			
-			// aapt resource value: 0x7f0b008a
-			public const int freq = 2131427466;
+			// aapt resource value: 0x7f0b008b
+			public const int freq = 2131427467;
 			
-			// aapt resource value: 0x7f0b008f
-			public const int full = 2131427471;
+			// aapt resource value: 0x7f0b0090
+			public const int full = 2131427472;
 			
 			// aapt resource value: 0x7f0b006f
 			public const int grass = 2131427439;
 			
-			// aapt resource value: 0x7f0b008d
-			public const int grass_green = 2131427469;
+			// aapt resource value: 0x7f0b008e
+			public const int grass_green = 2131427470;
 			
 			// aapt resource value: 0x7f0b0067
 			public const int head = 2131427431;
@@ -1811,11 +1814,11 @@ namespace TotemAndroid
 			// aapt resource value: 0x7f0b003b
 			public const int radio = 2131427387;
 			
-			// aapt resource value: 0x7f0b0090
-			public const int reset = 2131427472;
-			
 			// aapt resource value: 0x7f0b0091
-			public const int saveSelection = 2131427473;
+			public const int reset = 2131427473;
+			
+			// aapt resource value: 0x7f0b0092
+			public const int saveSelection = 2131427474;
 			
 			// aapt resource value: 0x7f0b0015
 			public const int screen = 2131427349;
@@ -1865,8 +1868,8 @@ namespace TotemAndroid
 			// aapt resource value: 0x7f0b004e
 			public const int search_voice_btn = 2131427406;
 			
-			// aapt resource value: 0x7f0b008e
-			public const int select = 2131427470;
+			// aapt resource value: 0x7f0b008f
+			public const int select = 2131427471;
 			
 			// aapt resource value: 0x7f0b004f
 			public const int select_dialog_listview = 2131427407;
@@ -1883,8 +1886,8 @@ namespace TotemAndroid
 			// aapt resource value: 0x7f0b0010
 			public const int showHome = 2131427344;
 			
-			// aapt resource value: 0x7f0b0093
-			public const int showSelectionProfile = 2131427475;
+			// aapt resource value: 0x7f0b0094
+			public const int showSelectionProfile = 2131427476;
 			
 			// aapt resource value: 0x7f0b0011
 			public const int showTitle = 2131427345;
@@ -1928,8 +1931,8 @@ namespace TotemAndroid
 			// aapt resource value: 0x7f0b0079
 			public const int time = 2131427449;
 			
-			// aapt resource value: 0x7f0b0092
-			public const int tinderView = 2131427474;
+			// aapt resource value: 0x7f0b0093
+			public const int tinderView = 2131427475;
 			
 			// aapt resource value: 0x7f0b0082
 			public const int tip = 2131427458;
@@ -1949,11 +1952,11 @@ namespace TotemAndroid
 			// aapt resource value: 0x7f0b002e
 			public const int topPanel = 2131427374;
 			
-			// aapt resource value: 0x7f0b0089
-			public const int totem = 2131427465;
+			// aapt resource value: 0x7f0b008a
+			public const int totem = 2131427466;
 			
-			// aapt resource value: 0x7f0b008c
-			public const int totem_list = 2131427468;
+			// aapt resource value: 0x7f0b008d
+			public const int totem_list = 2131427469;
 			
 			// aapt resource value: 0x7f0b006a
 			public const int totemapp_title = 2131427434;

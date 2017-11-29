@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.Collections.Generic;
 
 namespace TotemAppCore {
 	public class Totem {
@@ -9,5 +10,8 @@ namespace TotemAppCore {
 		public string body { get; set; }
 		public string synonyms { get; set; }
 		public bool selected { get; set; }
+
+		[Ignore]
+		public List<Eigenschap> eigenschappen { get; set; }
 	}
 }

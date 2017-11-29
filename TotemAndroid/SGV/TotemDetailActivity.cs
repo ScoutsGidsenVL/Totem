@@ -17,6 +17,8 @@ namespace TotemAndroid {
 		TextView number;
 		TextView title_synonyms;
 		TextView body;
+		TextView eigenschap_Title;
+		TextView eigenschappen;
 
 		Toast mToast;
 
@@ -55,6 +57,8 @@ namespace TotemAndroid {
                 number = FindViewById<TextView>(Resource.Id.number);
                 title_synonyms = FindViewById<TextView>(Resource.Id.title_synonyms);
                 body = FindViewById<TextView>(Resource.Id.body);
+                eigenschap_Title = FindViewById<TextView>(Resource.Id.eigenschap_Title);
+                eigenschappen = FindViewById<TextView>(Resource.Id.eigenschappen);
 
                 _gestureDetector = new GestureDetector(this);
 
@@ -274,6 +278,13 @@ namespace TotemAndroid {
                     title_synonyms.Text = _appController.CurrentTotem.title;
                     title_synonyms.SetTypeface(Verveine, 0);
                 }
+            }
+            //Add eigenschappen to end of body
+            eigenschap_Title.Text = "Eigenschappen:";
+            eigenschappen.Text = "";
+            foreach (Eigenschap eigenschap in _appController.CurrentTotem.eigenschappen)
+            {
+                eigenschappen.Text += eigenschap.name + "\b\n";
             }
 		}
 	}

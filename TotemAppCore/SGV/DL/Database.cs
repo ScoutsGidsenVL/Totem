@@ -141,6 +141,10 @@ namespace TotemAppCore {
 				var cmd = new SQLiteCommand (database);
 				cmd.CommandText = "select * from totem order by title";
 				var totems = cmd.ExecuteQuery<Totem> ();
+				foreach (Totem totem in totems)
+				{
+                    totem.eigenschappen = GetEigenschappenVanTotemID(totem.nid);
+				}
 				return totems;
 			}
 		}
@@ -262,6 +266,25 @@ namespace TotemAppCore {
 
         /* ------------------------------ TOTEMS EN EIGENSCHAPPEN ------------------------------ */
 
+        //returns List of Totem_eigenschapp related to totem id
+        public List<Eigenschap> GetEigenschappenVanTotemID(string id)
+        {
+            List<Eigenschap> EigenschappenVanTotem = new List<Eigenschap>();
+            lock (database)
+            {
+                var cmd = new SQLiteCommand(database);
+                var cleanId = id.Replace("'", "");
+                cmd.CommandText = "select tid from totem_eigenschap where nid = " + cleanId;
+                var totem_eigenschapen = cmd.ExecuteQuery<Totem_eigenschap>();
+
+                foreach (var totem_eigenschap in totem_eigenschapen)
+                {
+                    cmd.CommandText = "select * from eigenschap where tid = " + totem_eigenschap.tid;
+                    EigenschappenVanTotem.Add(cmd.ExecuteQuery<Eigenschap>()[0]);
+                }
+            }
+            return EigenschappenVanTotem;
+        }
 
         //returns List of Totem_eigenschapp related to eigenschap id
         public List<Totem_eigenschap> GetTotemsVanEigenschapsID(string id) {

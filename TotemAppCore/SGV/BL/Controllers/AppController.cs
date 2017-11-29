@@ -208,6 +208,12 @@ namespace TotemAppCore {
 			database.DeleteTotemFromProfile (totemID,profielName);
 		}
 
+		//returns List of Totem_eigenschappen related to totem id
+		public List<Eigenschap> GetEigenschappenVanTotemID(string id)
+		{
+			return database.GetEigenschappenVanTotemID(id);
+		}
+
 		//returns List of Totem_eigenschappen related to eigenschap id
 		public List<Totem_eigenschap> GetTotemsVanEigenschapsID(string id) {
 			return database.GetTotemsVanEigenschapsID (id);

@@ -54,5 +54,25 @@
             android:textColor="@android:color/black"
             android:gravity="fill_horizontal"
             app:font="@string/DIN_light" />
+        <TotemAndroid.CustomFontTextView
+          android:id="@+id/eigenschap_Title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textSize="34sp"
+          android:layout_marginTop="10sp"
+          android:paddingBottom="5sp"
+          android:textColor="@color/totemblue"
+          android:gravity="fill_horizontal"
+          app:font="@string/Verveine" />
+        <TotemAndroid.CustomFontTextView
+            android:id="@+id/eigenschappen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="5sp"
+            android:paddingBottom="30sp"
+            android:textColor="@android:color/black"
+            android:gravity="fill_horizontal"
+            app:font="@string/DIN_light" />
     </LinearLayout>
 </ScrollView>
