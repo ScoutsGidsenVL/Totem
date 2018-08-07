@@ -9,8 +9,8 @@ namespace TotemAndroid {
 	public class MyOnTouchListener : Java.Lang.Object, View.IOnTouchListener {
 
 		//WeakReference to context to avoid memory leak
-		readonly WeakReference<Context> mContext;
-		readonly EditText edittext;
+	    private readonly WeakReference<Context> mContext;
+	    private readonly EditText edittext;
 
 		public MyOnTouchListener (Context context, EditText edittext) {
 			mContext = new WeakReference<Context>(context);

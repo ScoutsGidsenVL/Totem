@@ -56,7 +56,7 @@ namespace TotemAppIos {
 			if(check)
 				(tableView.CellAt (indexPath) as ProfielTotemsTableViewCell).toggleCheckbox ();
 			else
-				_appController.ProfileTotemSelected (_appController.CurrentProfiel.name, Totems[indexPath.Row].Nid);
+				_appController.ProfileTotemSelected (_appController.CurrentProfiel.Name, Totems[indexPath.Row].Nid);
 			
 			tableView.DeselectRow (indexPath,true);
 		}

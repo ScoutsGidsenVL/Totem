@@ -18,7 +18,7 @@ namespace TotemAppIos {
 			base.ViewDidAppear (animated);
 			currProfiel = _appController.CurrentProfiel;
 			if (tblTotems.Source != null) {
-				var list = _appController.GetTotemsFromProfiel (currProfiel.name);
+				var list = _appController.GetTotemsFromProfiel (currProfiel.Name);
 				var empty = (list.Count == 0);
 				tblTotems.Hidden = empty;
 				btnDelete.Hidden = empty;
@@ -51,7 +51,7 @@ namespace TotemAppIos {
 			imgDelete.Image = UIImage.FromBundle ("SharedAssets/delete_white");
 			imgMore.Image = UIImage.FromBundle ("SharedAssets/more_vert_white");
 
-			totems = _appController.GetTotemsFromProfiel (_appController.CurrentProfiel.name);
+			totems = _appController.GetTotemsFromProfiel (_appController.CurrentProfiel.Name);
 			tblTotems.Source = new ProfielTotemsTableViewSource (totems);
 
 			//hide necessary UI elements
@@ -83,7 +83,7 @@ namespace TotemAppIos {
 		}
 
 		void ViewSelection() {
-			_appController.ProfileEigenschappenSelected (_appController.CurrentProfiel.name);
+			_appController.ProfileEigenschappenSelected (_appController.CurrentProfiel.Name);
 		}
 			
 		void gotoTotemDetailHandler() {
@@ -96,7 +96,7 @@ namespace TotemAppIos {
 
 		//updates data of TableView and handles necessary UI changes
 		void updateListSource() {
-			totems = _appController.GetTotemsFromProfiel (_appController.CurrentProfiel.name);
+			totems = _appController.GetTotemsFromProfiel (_appController.CurrentProfiel.Name);
 			(tblTotems.Source as ProfielTotemsTableViewSource).Totems = totems;
 			tblTotems.ReloadSections (new Foundation.NSIndexSet (0), UITableViewRowAnimation.None);
 			var empty = totems.Count == 0;
@@ -143,7 +143,7 @@ namespace TotemAppIos {
 		void deleteSelected(object sender, EventArgs e) {
 			var deleteList = totems.FindAll (x => x.Selected);
 			foreach (Totem t in deleteList)
-				_appController.DeleteTotemFromProfile (t.Nid, _appController.CurrentProfiel.name);
+				_appController.DeleteTotemFromProfile (t.Nid, _appController.CurrentProfiel.Name);
 
 			updateListSource ();
 			exitDelete (sender, e);
@@ -151,7 +151,7 @@ namespace TotemAppIos {
 
 		//resets selection and updates list
 		void deselectAndUpdate() {
-			totems = _appController.GetTotemsFromProfiel (_appController.CurrentProfiel.name);
+			totems = _appController.GetTotemsFromProfiel (_appController.CurrentProfiel.Name);
 			var deselect = totems.FindAll (x => x.Selected);
 			foreach (Totem t in deselect)
 				t.Selected = false;

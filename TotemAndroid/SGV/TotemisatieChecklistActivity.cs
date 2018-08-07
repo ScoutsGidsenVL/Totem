@@ -10,16 +10,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TotemAndroid {
+namespace TotemAndroid
+{
 	[Activity (Label = "Checklist")]			
-	public class TotemisatieChecklistActivity : BaseActivity {
-		Dictionary<string, List<string>> dictGroup;
-        ExpandableListView expand;
-        ExpendListAdapter expandAdapater;
+	public class TotemisatieChecklistActivity : BaseActivity
+	{
+	    private Dictionary<string, List<string>> dictGroup;
+	    private ExpandableListView expand;
+	    private ExpendListAdapter expandAdapater;
 
-        ISharedPreferences sharedPrefs;
+	    private ISharedPreferences sharedPrefs;
 
-        ImageButton delete;
+	    private ImageButton delete;
 
         protected override void OnCreate (Bundle savedInstanceState) {
 			base.OnCreate (savedInstanceState);
@@ -35,10 +37,7 @@ namespace TotemAndroid {
             sharedPrefs = GetSharedPreferences("checklist", FileCreationMode.Private);
             var ser = sharedPrefs.GetString("states", "empty");
             List<List<bool>> states;
-            if(!ser.Equals("empty"))
-                states = JsonSerializer.DeserializeFromString<List<List<bool>>>(ser);
-            else
-                states = null;
+            states = !ser.Equals("empty") ? JsonSerializer.DeserializeFromString<List<List<bool>>>(ser) : null;
 
             delete.SetImageResource(Resource.Drawable.ic_reset_white_24dp);
             delete.Click += ResetChecklist;
@@ -51,7 +50,8 @@ namespace TotemAndroid {
             expand.SetAdapter(expandAdapater);
         }
 
-        protected override void OnPause() {
+        protected override void OnPause()
+        {
             base.OnPause();
 
             //save eigenschappenlist state in sharedprefs
@@ -61,7 +61,8 @@ namespace TotemAndroid {
             editor.Commit();
         }
 
-        void ResetChecklist(object sender, EventArgs e) {
+	    private void ResetChecklist(object sender, EventArgs e)
+	    {
             var alert = new AlertDialog.Builder(this);
             alert.SetMessage("Checklist resetten?");
             alert.SetPositiveButton("Ja", (senderAlert, args) => {
@@ -77,10 +78,10 @@ namespace TotemAndroid {
 
         //adds header, footer and data to the ExpandableListView
         private void InitializeExpandableListView() {
-			dictGroup = new Dictionary<string, List<string>> ();
+			dictGroup = new Dictionary<string, List<string>>();
 			FillDictGroup ();
 
-			View view = View.Inflate (this, Resource.Layout.ExpandHeadFoot, null);
+			var view = View.Inflate (this, Resource.Layout.ExpandHeadFoot, null);
 			view.FindViewById<TextView> (Resource.Id.intro).Text = Resources.GetString(Resource.String.checklist_head);
 			expand.AddHeaderView (view, null, false);
 			view = View.Inflate (this, Resource.Layout.ExpandHeadFoot, null);
@@ -91,7 +92,8 @@ namespace TotemAndroid {
 		}
 
 		//stores the data from arrays.xml in dictgroup per section
-		private void FillDictGroup() {
+		private void FillDictGroup()
+		{
 			var voorbereiding = Resources.GetStringArray (Resource.Array.voorbereiding).ToList();
 			var totemopdrachten = Resources.GetStringArray (Resource.Array.totemopdrachten).ToList();
 			var geven = Resources.GetStringArray (Resource.Array.geven).ToList();

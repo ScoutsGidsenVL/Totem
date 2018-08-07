@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace TotemAndroid {
 	public class ExpendListAdapter: BaseExpandableListAdapter {
-		Dictionary<string, List<string>> _dictGroup;
-		List<string> _lstGroupID;
-		Activity _activity;
+	    private Dictionary<string, List<string>> _dictGroup;
+	    private List<string> _lstGroupID;
+	    private Activity _activity;
         public List<List<bool>> checkedStates;
 
 		public ExpendListAdapter (Activity activity, Dictionary<string, List<string>> dictGroup, List<List<bool>> states) {

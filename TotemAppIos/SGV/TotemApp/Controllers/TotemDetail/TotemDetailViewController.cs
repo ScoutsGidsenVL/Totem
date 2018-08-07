@@ -125,7 +125,7 @@ namespace TotemAppIos {
 			if (add) {
 				UIAlertController actionSheetAlert = UIAlertController.Create (null, null, UIAlertControllerStyle.ActionSheet);
 				foreach (Profiel p in _appController.DistinctProfielen) {
-					actionSheetAlert.AddAction (UIAlertAction.Create (p.name, UIAlertActionStyle.Default, action => addToProfile (p.name)));
+					actionSheetAlert.AddAction (UIAlertAction.Create (p.Name, UIAlertActionStyle.Default, action => addToProfile (p.Name)));
 				}
 					
 				actionSheetAlert.AddAction (UIAlertAction.Create ("Nieuw profiel", UIAlertActionStyle.Default, action => addProfileDialog ()));
@@ -143,7 +143,7 @@ namespace TotemAppIos {
 					
 				PresentViewController (actionSheetAlert, true, null);
 			} else {
-				var okCancelAlertController = UIAlertController.Create(null, _appController.CurrentTotem.Title + " verwijderen uit profiel " + _appController.CurrentProfiel.name + "?", UIAlertControllerStyle.Alert);
+				var okCancelAlertController = UIAlertController.Create(null, _appController.CurrentTotem.Title + " verwijderen uit profiel " + _appController.CurrentProfiel.Name + "?", UIAlertControllerStyle.Alert);
 
 				okCancelAlertController.AddAction(UIAlertAction.Create("Ja", UIAlertActionStyle.Default, alert => deleteFromProfile()));
 				okCancelAlertController.AddAction(UIAlertAction.Create("Nee", UIAlertActionStyle.Cancel, null));
@@ -191,7 +191,7 @@ namespace TotemAppIos {
 
 		//deletes totem drom profile and returns to totem page
 		void deleteFromProfile() {
-			_appController.DeleteTotemFromProfile (_appController.CurrentTotem.Nid, _appController.CurrentProfiel.name);
+			_appController.DeleteTotemFromProfile (_appController.CurrentTotem.Nid, _appController.CurrentProfiel.Name);
 			NavigationController.PopViewController (true);
 		}
 	}

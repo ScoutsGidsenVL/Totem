@@ -16,36 +16,39 @@ using System.Threading.Tasks;
 
 using TotemAppCore;
 
-namespace TotemAndroid {
+namespace TotemAndroid
+{
     [Activity (Label = "Eigenschappen", WindowSoftInputMode = SoftInput.AdjustPan | SoftInput.StateAlwaysHidden)]			
-	public class EigenschappenActivity : BaseActivity {
-		EigenschapAdapter eigenschapAdapter;
-		ListView allEigenschappenListView;
-		List<Eigenschap> eigenschappenList;
+	public class EigenschappenActivity : BaseActivity
+    {
+        private EigenschapAdapter eigenschapAdapter;
+        private ListView allEigenschappenListView;
+        private List<Eigenschap> eigenschappenList;
 
-		Toast mToastShort;
-		Toast mToastLong;
+        private Toast mToastShort;
+        private Toast mToastLong;
 
-		RelativeLayout bottomBar;
+        private RelativeLayout bottomBar;
 
-		EditText query;
-		TextView title;
-		ImageButton back;
-		ImageButton search;
+        private EditText query;
+        private TextView title;
+        private ImageButton back;
+        private ImageButton search;
 
-		IMenu menu;
+        private IMenu menu;
 
-        ISharedPreferences sharedPrefs;
+        private ISharedPreferences sharedPrefs;
 
-		MyOnCheckBoxClickListener mListener;
+        private MyOnCheckBoxClickListener mListener;
 
-		bool fullList = true;
-        bool IsProfileNull;
-        Profiel currProfiel;
+        private bool fullList = true;
+        private bool IsProfileNull;
+        private Profiel currProfiel;
 
-        ProgressDialog progress;
+        private ProgressDialog progress;
 
-        protected override void OnCreate(Bundle bundle) {
+        protected override void OnCreate(Bundle bundle)
+        {
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.AllEigenschappen);
@@ -109,21 +112,19 @@ namespace TotemAndroid {
             };          
         }
 
-        protected override void OnResume ()	{
+        protected override void OnResume()
+        {
 			base.OnResume ();
 
-			_appController.UpdateCounter += updateCounter;
+			_appController.UpdateCounter += UpdateCounter;
 			_appController.ShowSelected += ShowSelectedOnly;
 			_appController.NavigationController.GotoTotemResultEvent+= StartResultTotemsActivity;
 
-            IsProfileNull = (currProfiel == null);
+            IsProfileNull = currProfiel == null;
 
             string ser;
-            if (IsProfileNull)
-                ser = sharedPrefs.GetString("eigenschappen", null);
-            else
-                ser = _appController.GetSerFromProfile(currProfiel.name);
-            
+            ser = IsProfileNull ? sharedPrefs.GetString("eigenschappen", null) : _appController.GetSerFromProfile(currProfiel.Name);
+
             if (ser != null) {
                 _appController.Eigenschappen = JsonSerializer.DeserializeFromString<List<Eigenschap>>(ser);
                 eigenschapAdapter.UpdateData(_appController.Eigenschappen);
@@ -140,10 +141,11 @@ namespace TotemAndroid {
             _appController.FireUpdateEvent ();
 		}
 
-		protected override void OnPause () {
+		protected override void OnPause()
+		{
 			base.OnPause ();
 
-			_appController.UpdateCounter -= updateCounter;
+			_appController.UpdateCounter -= UpdateCounter;
 			_appController.ShowSelected -= ShowSelectedOnly;
 			_appController.NavigationController.GotoTotemResultEvent-= StartResultTotemsActivity;
             var ser = JsonSerializer.SerializeToString(_appController.Eigenschappen);
@@ -154,25 +156,26 @@ namespace TotemAndroid {
                 editor.PutString("eigenschappen", ser);
                 editor.Commit();
             } else {
-                _appController.AddOrUpdateEigenschappenSer(currProfiel.name, ser);
+                _appController.AddOrUpdateEigenschappenSer(currProfiel.Name, ser);
             }
 		}
 
-		void updateCounter () {
-			int count = _appController.Eigenschappen.FindAll (x => x.Selected).Count;
+        private void UpdateCounter()
+		{
+			var count = _appController.Eigenschappen.FindAll (x => x.Selected).Count;
 			var tvNumberSelected = FindViewById<TextView> (Resource.Id.selected);
 			tvNumberSelected.Text = count + " geselecteerd";
-			if (count > 0)
-				bottomBar.Visibility = ViewStates.Visible;
-			else
-				bottomBar.Visibility = ViewStates.Gone;
+			bottomBar.Visibility = count > 0 ? ViewStates.Visible : ViewStates.Gone;
 		}
 
 		//toggles the search bar
-		void ToggleSearch() {
-			if (query.Visibility == ViewStates.Visible) {
+        private void ToggleSearch()
+		{
+			if (query.Visibility == ViewStates.Visible)
+			{
 				HideSearch();
-			} else {
+			} else
+			{
 				back.Visibility = ViewStates.Gone;
 				title.Visibility = ViewStates.Gone;
 				query.Visibility = ViewStates.Visible;
@@ -184,7 +187,8 @@ namespace TotemAndroid {
 		}
 
 		//hides the search bar
-		void HideSearch() {
+        private void HideSearch()
+		{
 			back.Visibility = ViewStates.Visible;
 			title.Visibility = ViewStates.Visible;
 			query.Visibility = ViewStates.Gone;
@@ -201,7 +205,7 @@ namespace TotemAndroid {
 		}
 
 		//update list after every keystroke
-		void LiveSearch() {
+        private void LiveSearch() {
 			query.AfterTextChanged += (sender, args) => {
 				Search();
 			    if (query.Text.Equals(""))
@@ -212,7 +216,8 @@ namespace TotemAndroid {
 		}
 
 		//shows only totems that match the query
-		void Search() {
+        private void Search()
+		{
 			fullList = false;
 			eigenschappenList = _appController.FindEigenschapOpNaam(query.Text);
 			eigenschapAdapter.UpdateData (eigenschappenList);
@@ -224,7 +229,8 @@ namespace TotemAndroid {
 		}
 
 		//adds loading dialog and calculates totemlist
-		void VindTotem(object sender, EventArgs e) {
+        private void VindTotem(object sender, EventArgs e)
+		{
             //show progress dialog on UI thread
             RunOnUiThread(progress.Show);
 
@@ -235,80 +241,89 @@ namespace TotemAndroid {
             })).Start();
         }
 
-		void StartResultTotemsActivity() {
+        private void StartResultTotemsActivity()
+		{
 			var totemsActivity = new Intent (this, typeof(ResultTotemsActivity));
 			StartActivity (totemsActivity);
 		}
 
 		//create options menu
-		public override bool OnCreateOptionsMenu(IMenu m) {
+		public override bool OnCreateOptionsMenu(IMenu m)
+		{
 			menu = m;
 			MenuInflater.Inflate(Resource.Menu.EigenschapSelectieMenu, menu);
-			IMenuItem item = menu.FindItem (Resource.Id.full);
+			var item = menu.FindItem (Resource.Id.full);
 			item.SetVisible (false);
-            if(!IsProfileNull) {
-                IMenuItem save = menu.FindItem(Resource.Id.saveSelection);
+            if(!IsProfileNull)
+            {
+                var save = menu.FindItem(Resource.Id.saveSelection);
                 save.SetVisible(false);
             }
+
 			return base.OnCreateOptionsMenu(menu);
 		}
 
 		//options menu: add profile, view selection of view full list
-		public override bool OnOptionsItemSelected(IMenuItem item) {
-			switch (item.ItemId) {
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
+			switch (item.ItemId)
+			{
+			    //reset selection
+			    case Resource.Id.reset:
+                    query.Text = "";
+				    fullList = true;
+			        foreach (var eigenschap in eigenschappenList)
+			        {
+			            eigenschap.Selected = false;
+			        }
 
-			//reset selection
-			case Resource.Id.reset:
-                query.Text = "";
-				fullList = true;
-				foreach (Eigenschap e in eigenschappenList)
-					e.Selected = false;
-				eigenschapAdapter.UpdateData (_appController.Eigenschappen);
-				eigenschapAdapter.NotifyDataSetChanged ();
-                UpdateOptionsMenu ();
+			        eigenschapAdapter.UpdateData (_appController.Eigenschappen);
+				    eigenschapAdapter.NotifyDataSetChanged ();
+                    UpdateOptionsMenu ();
                 
-                //this needs a delay for some reason
-                Task.Factory.StartNew(() => Thread.Sleep(50)).ContinueWith(t => {
-                    allEigenschappenListView.SetSelection(0);
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                    //this needs a delay for some reason
+                    Task.Factory.StartNew(() => Thread.Sleep(50)).ContinueWith(t => {
+                        allEigenschappenListView.SetSelection(0);
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
 
-                return true;
+                    return true;
 			
-			//show selected only
-			case Resource.Id.select:
-				ShowSelectedOnly ();
-				return true;
+			    //show selected only
+			    case Resource.Id.select:
+				    ShowSelectedOnly ();
+				    return true;
 
-			//show full list
-			case Resource.Id.full:
-				query.Text = "";
-				fullList = true;
-				UpdateOptionsMenu ();
-				eigenschapAdapter.UpdateData (_appController.Eigenschappen);
-				eigenschapAdapter.NotifyDataSetChanged ();
-				return true;
+			    //show full list
+			    case Resource.Id.full:
+				    query.Text = "";
+				    fullList = true;
+				    UpdateOptionsMenu ();
+				    eigenschapAdapter.UpdateData (_appController.Eigenschappen);
+				    eigenschapAdapter.NotifyDataSetChanged ();
+				    return true;
 
-			//show full list
-			case Resource.Id.tinderView:
-				var totemsActivity = new Intent (this, typeof(TinderEigenschappenActivity));
-				StartActivity (totemsActivity);
-				return true;
+			    //show full list
+			    case Resource.Id.tinderView:
+				    var totemsActivity = new Intent (this, typeof(TinderEigenschappenActivity));
+				    StartActivity (totemsActivity);
+				    return true;
 
-            //show full list
-            case Resource.Id.saveSelection:
+                //show full list
+                case Resource.Id.saveSelection:
                     ProfilePopup();
-                return true;
+                    return true;
             }
 
 			return base.OnOptionsItemSelected(item);
 		}
 
-        private void ProfilePopup() {
+        private void ProfilePopup()
+        {
             var menu = new PopupMenu(this, search);
             menu.Inflate(Resource.Menu.Popup);
-            int count = 0;
-            foreach (Profiel p in _appController.DistinctProfielen) {
-                menu.Menu.Add(0, count, count, p.name);
+            var count = 0;
+            foreach (var profiel in _appController.DistinctProfielen) {
+                menu.Menu.Add(0, count, count, profiel.Name);
                 count++;
             }
 
@@ -318,21 +333,28 @@ namespace TotemAndroid {
                 if (arg1.Item.ItemId == count) {
                     var alert = new AlertDialog.Builder(this);
                     alert.SetTitle("Nieuw profiel");
-                    var input = new EditText(this);
-                    input.InputType = InputTypes.TextFlagCapWords;
-                    input.Hint = "Naam";
+                    var input = new EditText(this)
+                    {
+                        InputType = InputTypes.TextFlagCapWords,
+                        Hint = "Naam"
+                    };
                     KeyboardHelper.ShowKeyboard(this, input);
                     alert.SetView(input);
                     alert.SetPositiveButton("Ok", (s, args) => {
                         string value = input.Text;
-                        if (value.Replace("'", "").Replace(" ", "").Equals("")) {
+                        if (value.Replace("'", "").Replace(" ", "").Equals(""))
+                        {
                             mToastShort.SetText("Ongeldige naam");
                             mToastShort.Show();
-                        } else if (_appController.GetProfielNamen().Contains(value)) {
+                        }
+                        else if (_appController.GetProfielNamen().Contains(value))
+                        {
                             input.Text = "";
                             mToastShort.SetText("Profiel " + value + " bestaat al");
                             mToastShort.Show();
-                        } else {
+                        }
+                        else
+                        {
                             _appController.AddProfile(value);
                             _appController.AddOrUpdateEigenschappenSer(value, JsonSerializer.SerializeToString(_appController.Eigenschappen));
                             mToastShort.SetText("Selectie opgeslagen voor profiel " + value);
@@ -340,14 +362,18 @@ namespace TotemAndroid {
                         }
                     });
 
-                    AlertDialog d1 = alert.Create();
+                    var d1 = alert.Create();
 
                     //add profile when enter is clicked
                     input.EditorAction += (s2, e) => {
                         if (e.ActionId == ImeAction.Done)
+                        {
                             d1.GetButton(-1).PerformClick();
+                        }
                         else
+                        {
                             e.Handled = false;
+                        }
                     };
 
                     RunOnUiThread(d1.Show);
@@ -362,59 +388,78 @@ namespace TotemAndroid {
             menu.Show();
         }
 
-        void ShowSelectedOnly() {
-			List<Eigenschap> list = GetSelectedEigenschappen ();
-			if (list.Count == 0) {
-				mToastShort.SetText ("Geen eigenschappen geselecteerd");
-				mToastShort.Show ();
-			} else {
+        private void ShowSelectedOnly()
+        {
+			var list = GetSelectedEigenschappen();
+			if (list.Count == 0)
+			{
+				mToastShort.SetText("Geen eigenschappen geselecteerd");
+				mToastShort.Show();
+			}
+			else
+			{
 				fullList = false;
-				UpdateOptionsMenu ();
-				eigenschapAdapter.UpdateData (list);
-				eigenschapAdapter.NotifyDataSetChanged ();
+				UpdateOptionsMenu();
+				eigenschapAdapter.UpdateData(list);
+				eigenschapAdapter.NotifyDataSetChanged();
 				bottomBar.Visibility = ViewStates.Visible;
 			}
 		}
 
 		//changes the options menu items according to list
 		//delay of 0.5 seconds to take animation into account
-		void UpdateOptionsMenu() {
-			IMenuItem s = menu.FindItem (Resource.Id.select);
-			IMenuItem f = menu.FindItem (Resource.Id.full);
+        private void UpdateOptionsMenu()
+        {
+			var select = menu.FindItem(Resource.Id.select);
+			var full = menu.FindItem(Resource.Id.full);
 
 			Task.Factory.StartNew(() => Thread.Sleep(500)).ContinueWith(t => {
-				if (fullList) {
-					s.SetVisible (true);
-					f.SetVisible (false);
-				} else {
-					s.SetVisible (false);
-					f.SetVisible (true);
+				if (fullList)
+				{
+					select.SetVisible(true);
+					full.SetVisible(false);
+				}
+				else
+				{
+					select.SetVisible(false);
+					full.SetVisible(true);
 				}
 			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		//returns list of eigenschappen that have been checked
-		List<Eigenschap> GetSelectedEigenschappen() {
+        private List<Eigenschap> GetSelectedEigenschappen()
+        {
 			var result = new List<Eigenschap> ();
-			foreach(Eigenschap e in _appController.Eigenschappen)
-				if (e.Selected)
-					result.Add (e);
+            foreach (var eigenschap in _appController.Eigenschappen)
+            {
+                if (eigenschap.Selected)
+                {
+                    result.Add(eigenschap);
+                }
+            }
 
-			return result;
+            return result;
 		}
 
 		//return to full list and empty search field when 'back' is pressed
 		//this happens only when a search query is currently entered
-		public override void OnBackPressed() {
-			if (query.Visibility == ViewStates.Visible) {
+		public override void OnBackPressed()
+		{
+			if (query.Visibility == ViewStates.Visible)
+			{
 				HideSearch ();
-			} else if (!fullList) {
+			}
+			else if (!fullList)
+			{
 				query.Text = "";
 				fullList = true;
 				UpdateOptionsMenu ();
 				eigenschapAdapter.UpdateData (_appController.Eigenschappen);
 				eigenschapAdapter.NotifyDataSetChanged ();
-			} else {
+			}
+			else
+			{
 				base.OnBackPressed ();
 			}
 		}

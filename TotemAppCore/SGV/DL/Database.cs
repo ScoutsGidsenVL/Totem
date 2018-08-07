@@ -110,7 +110,7 @@ namespace TotemAppCore {
                 var oldProfielen = oldDb.Query<Profiel>("SELECT * FROM profiel");
                 var oldEigenschappenSer = oldDb.Query<ProfielEigenschappen>("SELECT * FROM profiel_eigenschappen");
                 foreach(Profiel p in oldProfielen)
-                    newDB.Execute("INSERT INTO profiel (name, nid) values (?, ?)", p.name, p.Nid);
+                    newDB.Execute("INSERT INTO profiel (name, nid) values (?, ?)", p.Name, p.Nid);
                 
                 foreach (ProfielEigenschappen pe in oldEigenschappenSer)
                     newDB.Execute("INSERT INTO profiel_eigenschappen (name, eigenschappen_ser) values (?, ?)", pe.Name, pe.EigenschappenSerialized);

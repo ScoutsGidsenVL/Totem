@@ -8,14 +8,14 @@ using TotemAppCore;
 
 namespace TotemAndroid {
     public class EigenschapAdapter: BaseAdapter<Eigenschap> {
-		Activity _activity;
-		List<Eigenschap> eigenschapList;
+        private Activity _activity;
+        private List<Eigenschap> eigenschapList;
 
-		AppController _appController = AppController.Instance;
+        private AppController _appController = AppController.Instance;
 
-		MyOnCheckBoxClickListener mListener;
+        private MyOnCheckBoxClickListener mListener;
 
-        int mScreenWidth;
+        private int mScreenWidth;
 
 		public EigenschapAdapter (Activity activity, List<Eigenschap> list, MyOnCheckBoxClickListener listener, int screenWidth) {	
 			_activity = activity;
@@ -97,7 +97,7 @@ namespace TotemAndroid {
 		}
 
 		//ViewHolder for better performance
-		class ViewHolder : Java.Lang.Object {
+        private class ViewHolder : Java.Lang.Object {
 			public TextView eigenschap;
 			public CheckBox checkbox;
 		}

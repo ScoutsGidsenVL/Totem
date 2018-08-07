@@ -8,9 +8,9 @@ using TotemAppCore;
 
 namespace TotemAndroid {
 	public class ProfielAdapter: BaseAdapter<Profiel> {
-		Activity _activity;
-		List<Profiel> profielList;
-		bool showDelete;
+	    private Activity _activity;
+	    private List<Profiel> profielList;
+	    private bool showDelete;
 
 		public ProfielAdapter (Activity activity, List<Profiel> list) {	
 			this._activity = activity;
@@ -59,7 +59,7 @@ namespace TotemAndroid {
 
 			viewHolder.checkbox.Tag = position;
 
-			viewHolder.profiel.Text = profielList [position].name;
+			viewHolder.profiel.Text = profielList [position].Name;
 			viewHolder.checkbox.Checked = profielList [(int)viewHolder.checkbox.Tag].Selected;
 
 			viewHolder.checkbox.Click += (o, e) => {
@@ -70,7 +70,7 @@ namespace TotemAndroid {
 		}
 
 		//ViewHolder for better performance
-		class ViewHolder : Java.Lang.Object {
+	    private class ViewHolder : Java.Lang.Object {
 			public TextView profiel;
 			public CheckBox checkbox;
 		}

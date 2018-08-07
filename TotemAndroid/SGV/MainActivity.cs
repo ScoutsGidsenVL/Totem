@@ -5,76 +5,85 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 
-namespace TotemAndroid {
+namespace TotemAndroid
+{
     [Activity (Label = "Totemapp", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/AppThemeNoAction")]
-	public class MainActivity : BaseActivity {
+	public class MainActivity : BaseActivity
+    {
 		//Database db;
-		Button totems;
-		Button eigenschappen;
-		Button profielen;
-		Button checklist;
+        private Button totems;
+        private Button eigenschappen;
+        private Button profielen;
+        private Button checklist;
 
-        Toast mToast;
-        View toastView;
+        private Toast mToast;
+        private View toastView;
 
-        protected override void OnCreate (Bundle bundle) {
-			base.OnCreate (bundle);
+        protected override void OnCreate(Bundle bundle)
+        {
+			base.OnCreate(bundle);
 
-			SetContentView (Resource.Layout.Main);
+			SetContentView(Resource.Layout.Main);
 
-			totems = FindViewById<Button> (Resource.Id.totems);
-			eigenschappen = FindViewById<Button> (Resource.Id.eigenschappen);
-			profielen = FindViewById<Button> (Resource.Id.profielen);
-			checklist = FindViewById<Button> (Resource.Id.checklist);
+			totems = FindViewById<Button>(Resource.Id.totems);
+			eigenschappen = FindViewById<Button>(Resource.Id.eigenschappen);
+			profielen = FindViewById<Button>(Resource.Id.profielen);
+			checklist = FindViewById<Button>(Resource.Id.checklist);
 
-			totems.Click += (sender, eventArgs) => _appController.TotemMenuItemClicked ();
-			eigenschappen.Click += (sender, eventArgs) => _appController.EigenschappenMenuItemClicked ();
-			profielen.Click += (sender, eventArgs) => _appController.ProfileMenuItemClicked ();
-			checklist.Click += (sender, eventArgs) => _appController.ChecklistMenuItemClicked ();
+			totems.Click += (sender, eventArgs) => _appController.TotemMenuItemClicked();
+			eigenschappen.Click += (sender, eventArgs) => _appController.EigenschappenMenuItemClicked();
+			profielen.Click += (sender, eventArgs) => _appController.ProfileMenuItemClicked();
+			checklist.Click += (sender, eventArgs) => _appController.ChecklistMenuItemClicked();
 
-            TextView title = FindViewById<TextView>(Resource.Id.totemapp_title);
+            var title = FindViewById<TextView>(Resource.Id.totemapp_title);
             title.LongClick += ShowEasterEgg;
 
-            ImageButton tip = FindViewById<ImageButton>(Resource.Id.tst);
+            var tip = FindViewById<ImageButton>(Resource.Id.tst);
             tip.Click += (sender, e) => ShowTipDialog();
 
-            LayoutInflater mInflater = LayoutInflater.From(this);
+            var mInflater = LayoutInflater.From(this);
             toastView = mInflater.Inflate(Resource.Layout.InfoToast, null);
 
             //smaller font size for smaller screens
             //otherwise UI issue
             var disp = WindowManager.DefaultDisplay;
-            Point size = new Point();
+            var size = new Point();
             disp.GetSize(size);
 
-            if (size.X <= 480) {
+            if (size.X <= 480)
+            {
                 title.TextSize = 60;
             }
         }
 
-        protected override void OnResume ()	{
+        protected override void OnResume()
+        {
 			base.OnResume ();
 
-            _appController.NavigationController.GotoTotemListEvent += gotoTotemListHandler;
-			_appController.NavigationController.GotoEigenschapListEvent += gotoEigenschappenListHandler;
-			_appController.NavigationController.GotoProfileListEvent += gotoProfileListHandler;
-			_appController.NavigationController.GotoChecklistEvent += gotoChecklistHandler;
+            _appController.NavigationController.GotoTotemListEvent += GotoTotemListHandler;
+			_appController.NavigationController.GotoEigenschapListEvent += GotoEigenschappenListHandler;
+			_appController.NavigationController.GotoProfileListEvent += GotoProfileListHandler;
+			_appController.NavigationController.GotoChecklistEvent += GotoChecklistHandler;
 		}
 
-		protected override void OnPause () {
-			base.OnPause ();
+		protected override void OnPause()
+		{
+			base.OnPause();
             toastView.Visibility = ViewStates.Gone;
 
-            _appController.NavigationController.GotoTotemListEvent -= gotoTotemListHandler;
-			_appController.NavigationController.GotoEigenschapListEvent -= gotoEigenschappenListHandler;
-			_appController.NavigationController.GotoProfileListEvent -= gotoProfileListHandler;
-			_appController.NavigationController.GotoChecklistEvent -= gotoChecklistHandler;
+            _appController.NavigationController.GotoTotemListEvent -= GotoTotemListHandler;
+			_appController.NavigationController.GotoEigenschapListEvent -= GotoEigenschappenListHandler;
+			_appController.NavigationController.GotoProfileListEvent -= GotoProfileListHandler;
+			_appController.NavigationController.GotoChecklistEvent -= GotoChecklistHandler;
 		}
 
-        private void ShowEasterEgg(object sender, View.LongClickEventArgs e) {
-            mToast = new Toast(this);
-            mToast.Duration = ToastLength.Short;
-            mToast.SetGravity(GravityFlags.Center | GravityFlags.Bottom, 0, ConvertDPToPixels(10));
+        private void ShowEasterEgg(object sender, View.LongClickEventArgs e)
+        {
+            mToast = new Toast(this)
+            {
+                Duration = ToastLength.Short
+            };
+            mToast.SetGravity(GravityFlags.Center | GravityFlags.Bottom, 0, ConvertDpToPixels(10));
 
             toastView.Visibility = ViewStates.Visible;
             mToast.View = toastView;
@@ -82,7 +91,7 @@ namespace TotemAndroid {
             //smaller font size for smaller screens
             //otherwise UI issue
             var disp = WindowManager.DefaultDisplay;
-            Point size = new Point();
+            var size = new Point();
             disp.GetSize(size);
 
             if (size.X <= 480) {
@@ -93,57 +102,68 @@ namespace TotemAndroid {
             mToast.Show();
         }
 
-        private int ConvertDPToPixels(float dp) {
-            float scale = Resources.DisplayMetrics.Density;
-            int result = (int)(dp * scale + 0.5f);
+        private int ConvertDpToPixels(float dp)
+        {
+            var scale = Resources.DisplayMetrics.Density;
+            var result = (int)(dp * scale + 0.5f);
+
             return result;
         }
 
-        void GoToActivity(string activity) {
+        private void GoToActivity(string activity)
+        {
 			Intent intent = null;
-			switch (activity) {
-			case "totems":
-				intent = new Intent (this, typeof(TotemsActivity));
-				break;
-			case "eigenschappen":
-				intent = new Intent (this, typeof(EigenschappenActivity));
-				break;
-			case "profielen":
-				intent = new Intent (this, typeof(ProfielenActivity));
-				break;
-			case "checklist":
-				intent = new Intent (this, typeof(TotemisatieChecklistActivity));
-				break;
+			switch (activity)
+			{
+			    case "totems":
+				    intent = new Intent(this, typeof(TotemsActivity));
+				    break;
+			    case "eigenschappen":
+				    intent = new Intent(this, typeof(EigenschappenActivity));
+				    break;
+			    case "profielen":
+				    intent = new Intent(this, typeof(ProfielenActivity));
+				    break;
+			    case "checklist":
+				    intent = new Intent(this, typeof(TotemisatieChecklistActivity));
+				    break;
 			}
-			StartActivity (intent);
+
+			StartActivity(intent);
 		}
 
-		public void ShowTipDialog() {
+		public void ShowTipDialog()
+		{
 			var dialog = TipDialog.NewInstance(this);
-			RunOnUiThread (() => dialog.Show (FragmentManager, "dialog"));
+			RunOnUiThread(() => dialog.Show (FragmentManager, "dialog"));
 		}
 
-		public override void OnBackPressed() {
-			var StartMain = new Intent (Intent.ActionMain);
-			StartMain.AddCategory (Intent.CategoryHome);
-			StartMain.SetFlags (ActivityFlags.NewTask);
-			StartActivity (StartMain);
+		public override void OnBackPressed()
+		{
+			var startMain = new Intent(Intent.ActionMain);
+			startMain.AddCategory(Intent.CategoryHome);
+			startMain.SetFlags(ActivityFlags.NewTask);
+			StartActivity(startMain);
 		}
 
-		void gotoTotemListHandler () {
+        private void GotoTotemListHandler()
+        {
 			GoToActivity ("totems");
 		}
 
-		void gotoEigenschappenListHandler () {
-			GoToActivity ("eigenschappen");
+        private void GotoEigenschappenListHandler()
+        {
+			GoToActivity("eigenschappen");
 		}
 
-		void gotoProfileListHandler () {
-			GoToActivity ("profielen");
+        private void GotoProfileListHandler()
+        {
+			GoToActivity("profielen");
 		}
 
-		void gotoChecklistHandler () {
-			GoToActivity ("checklist");
+        private void GotoChecklistHandler()
+        {
+			GoToActivity("checklist");
 		}
 	}
 }

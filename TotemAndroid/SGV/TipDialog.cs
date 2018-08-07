@@ -5,32 +5,39 @@ using Android.Widget;
 
 using TotemAppCore;
 
-namespace TotemAndroid {
-    public class TipDialog : DialogFragment	{
-		TextView tip;
+namespace TotemAndroid
+{
+    public class TipDialog : DialogFragment
+    {
+        private TextView tip;
 
-		Context context;
+        private Context context;
 
-		AppController _appController = AppController.Instance;
+        private AppController _appController = AppController.Instance;
 
-		public TipDialog(Context context) {
+		public TipDialog(Context context)
+		{
 			this.context = context;
 		}
 
-		public static TipDialog NewInstance(Context context) {
+		public static TipDialog NewInstance(Context context)
+		{
 			var dialogFragment = new TipDialog(context);
+
 			return dialogFragment;
 		}
 
-		public override Dialog OnCreateDialog(Bundle savedInstanceState) {
-			var builder = new AlertDialog.Builder (Activity); 
+		public override Dialog OnCreateDialog(Bundle savedInstanceState)
+		{
+			var builder = new AlertDialog.Builder(Activity); 
 
 			var inflater = Activity.LayoutInflater;
-			var dialogView = inflater.Inflate (Resource.Layout.TipPopUp, null);
+			var dialogView = inflater.Inflate(Resource.Layout.TipPopUp, null);
 
-			if (dialogView != null) {
+			if (dialogView != null)
+			{
 				tip = dialogView.FindViewById<TextView> (Resource.Id.tip);
-				tip.Text = _appController.GetRandomTip ();
+				tip.Text = _appController.GetRandomTip();
 
 				builder.SetView(dialogView);
 				builder.SetNegativeButton("Ok", HandleNegativeButtonClick);
@@ -41,7 +48,8 @@ namespace TotemAndroid {
 			return dialog;
 		}
 
-		void HandleNegativeButtonClick(object sender, DialogClickEventArgs e) {
+        private void HandleNegativeButtonClick(object sender, DialogClickEventArgs e)
+        {
 			var dialog = (AlertDialog) sender;
 			dialog.Dismiss ();
 		}

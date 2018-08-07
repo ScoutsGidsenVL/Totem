@@ -11,22 +11,25 @@ using System.Collections.Generic;
 
 using TotemAppCore;
 
-namespace TotemAndroid {
+namespace TotemAndroid
+{
     [Activity (Label = "Profielen", WindowSoftInputMode=SoftInput.StateAlwaysHidden, LaunchMode=LaunchMode.SingleTask)]			
-	public class ProfielenActivity : BaseActivity {
-		ProfielAdapter profielAdapter;
-		ListView profielenListView;
-		List<Profiel> profielen;
+	public class ProfielenActivity : BaseActivity
+    {
+        private ProfielAdapter profielAdapter;
+        private ListView profielenListView;
+        private List<Profiel> profielen;
 
-		TextView title;
-		ImageButton back;
-		ImageButton close;
-		ImageButton add;
-		ImageButton delete;
-		TextView noProfiles;
-		Toast mToast;
+        private TextView title;
+        private ImageButton back;
+        private ImageButton close;
+        private ImageButton add;
+        private ImageButton delete;
+        private TextView noProfiles;
+        private Toast mToast;
 
-		protected override void OnCreate (Bundle savedInstanceState) {
+		protected override void OnCreate (Bundle savedInstanceState)
+		{
 			base.OnCreate (savedInstanceState);
 
 			SetContentView (Resource.Layout.Profielen);
@@ -61,108 +64,134 @@ namespace TotemAndroid {
 			delete.Click += ShowDeleteProfiles;
 			close.Click += HideDeleteProfiles;
 
-			if (profielen.Count == 0) {
+			if (profielen.Count == 0)
+			{
 				noProfiles.Visibility = ViewStates.Visible;
 				delete.Visibility = ViewStates.Gone;
-			} else {
+			}
+			else
+			{
 				delete.Visibility = ViewStates.Visible;
 			}
 		}
 
-		protected override void OnResume ()	{
-			base.OnResume ();
+		protected override void OnResume()
+		{
+			base.OnResume();
 
 			_appController.NavigationController.GotoProfileTotemListEvent+= StartTotemProfileActivity;
 		}
 
-		protected override void OnPause ()	{
-			base.OnPause ();
+		protected override void OnPause()
+        {
+			base.OnPause();
 
 			_appController.NavigationController.GotoProfileTotemListEvent-= StartTotemProfileActivity;
 		}
 
-		void StartTotemProfileActivity() {
+        private void StartTotemProfileActivity()
+		{
 			var i = new Intent(this, typeof(ProfielTotemsActivity));
-			StartActivity (i);
+			StartActivity(i);
 		}
 
 		//updates data of the adapter and shows/hides the "empty"-message when needed
-		void UpdateList() {
+        private void UpdateList()
+        {
 			profielen = _appController.DistinctProfielen;
-			if (profielen.Count == 0) {
+			if (profielen.Count == 0)
+			{
 				noProfiles.Visibility = ViewStates.Visible;
 				delete.Visibility = ViewStates.Gone;
-			} else {
+			}
+			else
+			{
 				noProfiles.Visibility = ViewStates.Gone;
 				delete.Visibility = ViewStates.Visible;
 			}
+
 			profielAdapter.UpdateData(profielen);
 			profielAdapter.NotifyDataSetChanged();
 		}
 
-		void ShowTotems(object sender, AdapterView.ItemClickEventArgs e) {
-			int pos = e.Position;
+        private void ShowTotems(object sender, AdapterView.ItemClickEventArgs e)
+        {
+			var pos = e.Position;
 			var item = profielAdapter.GetItemAtPosition(pos);
 
-			_appController.ProfileSelected (item.name);
+			_appController.ProfileSelected(item.Name);
 		}
 
-		void DeleteProfile(object sender, AdapterView.ItemLongClickEventArgs e) {
-			int pos = e.Position;
+        private void DeleteProfile(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+			var pos = e.Position;
 			var item = profielAdapter.GetItemAtPosition(pos);
 
-			var alert = new AlertDialog.Builder (this);
-			alert.SetMessage ("Profiel " + item.name + " verwijderen?");
+			var alert = new AlertDialog.Builder(this);
+			alert.SetMessage("Profiel " + item.Name + " verwijderen?");
 			alert.SetPositiveButton ("Ja", (senderAlert, args) => {
-				_appController.DeleteProfile(item.name);
-				mToast.SetText("Profiel " + item.name + " verwijderd");
+				_appController.DeleteProfile(item.Name);
+				mToast.SetText("Profiel " + item.Name + " verwijderd");
 				mToast.Show();
 				UpdateList();
 			});
 
-			alert.SetNegativeButton ("Nee", (senderAlert, args) => {});
+			alert.SetNegativeButton("Nee", (senderAlert, args) => {});
 
 			Dialog dialog = alert.Create();
-			RunOnUiThread (dialog.Show);
+			RunOnUiThread(dialog.Show);
 		}
 
-		void AddProfile() {
+        private void AddProfile()
+        {
 			var alert = new AlertDialog.Builder (this);
 			alert.SetTitle ("Nieuw profiel");
-			var input = new EditText (this); 
-			input.InputType = Android.Text.InputTypes.TextFlagCapWords;
-			input.Hint = "Naam";
-			KeyboardHelper.ShowKeyboard (this, input);
+            var input = new EditText(this)
+            {
+                InputType = Android.Text.InputTypes.TextFlagCapWords,
+                Hint = "Naam"
+            };
+            KeyboardHelper.ShowKeyboard (this, input);
 			alert.SetView (input);
 			alert.SetPositiveButton ("Ok", (sender, args) => {
-				string value = input.Text;
-				if(value.Replace("'", "").Replace(" ", "").Equals("")) {
+				var value = input.Text;
+				if (value.Replace("'", "").Replace(" ", "").Equals(""))
+				{
 					mToast.SetText("Ongeldige naam");
 					mToast.Show();				
-				} else if(_appController.GetProfielNamen().Contains(value)) {
+				}
+				else if (_appController.GetProfielNamen().Contains(value))
+				{
 					input.Text = "";
 					mToast.SetText("Profiel " + value + " bestaat al");
 					mToast.Show();
-				} else {
+				}
+				else
+				{
 					_appController.AddProfile(value);
 					UpdateList();
 				}
 			});
 
-			AlertDialog d1 = alert.Create();
+			var d1 = alert.Create();
 
 			//add profile when enter is clicked
 			input.EditorAction += (sender, e) => {
-				if (e.ActionId == ImeAction.Done)
-					d1.GetButton(-1).PerformClick();
-				else
-					e.Handled = false;
+			    if (e.ActionId == ImeAction.Done)
+			    {
+			        d1.GetButton(-1).PerformClick();
+			    }
+			    else
+			    {
+			        e.Handled = false;
+			    }
 			};
 
 			RunOnUiThread (d1.Show);
 		}
-			
-		void ShowDeleteProfiles(object sender, EventArgs e) {
+
+        private void ShowDeleteProfiles(object sender, EventArgs e)
+        {
 			profielAdapter.ShowDelete ();
 			profielAdapter.NotifyDataSetChanged ();
 
@@ -175,7 +204,8 @@ namespace TotemAndroid {
 			delete.Click += RemoveSelectedProfiles;
 		}
 
-		void HideDeleteProfiles(object sender, EventArgs e) {
+        private void HideDeleteProfiles(object sender, EventArgs e)
+        {
 			profielAdapter.HideDelete ();
 			profielAdapter.NotifyDataSetChanged ();
 
@@ -188,33 +218,43 @@ namespace TotemAndroid {
 			delete.Click += ShowDeleteProfiles;
 		}
 
-		void RemoveSelectedProfiles(object sender, EventArgs e) {
-			bool selected = false;
-			foreach(Profiel p in profielen) {
-				if (p.Selected) {
+        private void RemoveSelectedProfiles(object sender, EventArgs e)
+        {
+			var selected = false;
+			foreach (var profiel in profielen)
+			{
+				if (profiel.Selected)
+				{
 					selected = true;
 					break;
 				}
 			}
 
-			if (selected) {		
+			if (selected)
+			{		
 				var alert1 = new AlertDialog.Builder (this);
-				alert1.SetMessage ("Geselecteerde profielen verwijderen?");
-				alert1.SetPositiveButton ("Ja", (senderAlert, args) => {
-					foreach (Profiel p in profielen)
-						if (p.Selected)
-							_appController.DeleteProfile (p.name);
-				
-					UpdateList ();
+				alert1.SetMessage("Geselecteerde profielen verwijderen?");
+				alert1.SetPositiveButton("Ja", (senderAlert, args) => {
+				    foreach (var profiel in profielen)
+				    {
+				        if (profiel.Selected)
+				        {
+				            _appController.DeleteProfile(profiel.Name);
+				        }
+				    }
+
+				    UpdateList ();
 					HideDeleteProfiles (sender, e);
 				});
 
-				alert1.SetNegativeButton ("Nee", (senderAlert, args) => {});
+				alert1.SetNegativeButton("Nee", (senderAlert, args) => {});
 
-				Dialog d2 = alert1.Create ();
+				Dialog d2 = alert1.Create();
 
-				RunOnUiThread (d2.Show);
-			} else {
+				RunOnUiThread(d2.Show);
+			}
+			else
+			{
 				mToast.SetText("Geen profielen geselecteerd om te verwijderen");
 				mToast.Show();
 			}

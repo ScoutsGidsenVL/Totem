@@ -98,7 +98,7 @@ namespace TotemAppCore {
 				        list = Totems;
 				        break;
 				    case DetailMode.PROFILE:
-				        list = GetTotemsFromProfiel(CurrentProfiel.name);
+				        list = GetTotemsFromProfiel(CurrentProfiel.Name);
 				        break;
 				    default:
 				        list = TotemEigenschapDict.Keys.ToList ();
@@ -121,7 +121,7 @@ namespace TotemAppCore {
 				        list = Totems;
 				        break;
 				    case DetailMode.PROFILE:
-				        list = GetTotemsFromProfiel(CurrentProfiel.name);
+				        list = GetTotemsFromProfiel(CurrentProfiel.Name);
 				        break;
 				    default:
 				        list = TotemEigenschapDict.Keys.ToList ();
@@ -204,7 +204,7 @@ namespace TotemAppCore {
 
 		//returns a list of totems related to a profile
 		public List<Totem> GetTotemsFromProfiel(string name) {
-			var list = AllProfielen.FindAll (x => x.name == name);
+			var list = AllProfielen.FindAll (x => x.Name == name);
 			var profiles = list.FindAll (y =>y.Nid!=null);
 			var result = new List<Totem> ();
 			foreach (var profile in profiles)
@@ -249,7 +249,7 @@ namespace TotemAppCore {
 		public List<string> GetProfielNamen() {
 			var namen = new List<string> ();
 			foreach (Profiel p in DistinctProfielen)
-				namen.Add (p.name);
+				namen.Add (p.Name);
 			return namen;
 		}
 
@@ -336,7 +336,7 @@ namespace TotemAppCore {
 			if (profileName == null) {
 				CurrentProfiel = null;
 			} else {
-				var profiel = _profielen.Find (x => x.name.Equals (profileName));
+				var profiel = _profielen.Find (x => x.Name.Equals (profileName));
 				CurrentProfiel = profiel;
 			}
 		}

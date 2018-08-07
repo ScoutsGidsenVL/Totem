@@ -5,15 +5,18 @@ using Android.Graphics;
 using Android.OS;
 using Android.Widget;
 
-namespace TotemAndroid {
+namespace TotemAndroid
+{
     [Activity (Label = "Totem bepalen", Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]
-	public class TinderEigenschappenActivity : BaseActivity {
-		TextView adjectief;
-		int eigenschapCount = 0;
+	public class TinderEigenschappenActivity : BaseActivity
+    {
+        private TextView adjectief;
+        private int eigenschapCount = 0;
 
-        ISharedPreferences sharedPrefs;
+        private ISharedPreferences sharedPrefs;
 
-        protected override void OnCreate (Bundle bundle) {
+        protected override void OnCreate (Bundle bundle)
+        {
 			base.OnCreate (bundle);
 
 			SetContentView (Resource.Layout.Eigenschappen);
@@ -23,8 +26,8 @@ namespace TotemAndroid {
 
 			ActionBarTitle.Text = "Eigenschappen";
 
-			Button jaKnop = FindViewById<Button> (Resource.Id.jaKnop);
-			Button neeKnop = FindViewById<Button> (Resource.Id.neeKnop);
+			var jaKnop = FindViewById<Button> (Resource.Id.jaKnop);
+			var neeKnop = FindViewById<Button> (Resource.Id.neeKnop);
 
 			adjectief = FindViewById<TextView> (Resource.Id.eigenschap);
 
@@ -38,16 +41,18 @@ namespace TotemAndroid {
             //smaller font size for smaller screens
             //otherwise UI issue
             var disp = WindowManager.DefaultDisplay;
-            Point size = new Point();
+            var size = new Point();
             disp.GetSize(size);
 
-            if (size.X < 4000) {
+            if (size.X < 4000)
+            {
                 var eig = FindViewById<TextView>(Resource.Id.eigenschap);
                 eig.TextSize = 20;
             }
         }
 
-        protected override void OnPause() {
+        protected override void OnPause()
+        {
             base.OnPause();
 
             //save eigenschappenlist state in sharedprefs
@@ -58,10 +63,14 @@ namespace TotemAndroid {
         }
 
         //show next eigenschap
-        public void UpdateScreen() {
-			if (eigenschapCount < 324) {
+        public void UpdateScreen()
+        {
+			if (eigenschapCount < 324)
+			{
 				adjectief.Text = _appController.Eigenschappen[eigenschapCount].Name;
-			} else {
+			}
+			else
+			{
 				var i = new Intent (this, typeof(EigenschappenActivity));
 				i.SetFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
 				_appController.FireSelectedEvent ();
@@ -69,7 +78,8 @@ namespace TotemAndroid {
 			}
 		}
 			
-		public void Push(bool choice) {
+		public void Push(bool choice)
+		{
 			_appController.Eigenschappen [eigenschapCount].Selected = choice;
 			eigenschapCount++;
 			UpdateScreen ();

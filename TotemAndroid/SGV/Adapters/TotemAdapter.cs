@@ -8,15 +8,15 @@ using TotemAppCore;
 
 namespace TotemAndroid {
 	public class TotemAdapter: BaseAdapter<Totem>, ISectionIndexer {
-		Activity _activity;
-		List<Totem> totemList;
-		int[] freqs;
-		int selected;
-		bool showDelete;
+	    private Activity _activity;
+	    private List<Totem> totemList;
+	    private int[] freqs;
+	    private int selected;
+	    private bool showDelete;
 
-		Dictionary<string, int> alphaIndex;
-		string [] sections;
-		Java.Lang.Object[] sectionsObjects;
+	    private Dictionary<string, int> alphaIndex;
+	    private string [] sections;
+	    private Java.Lang.Object[] sectionsObjects;
 
 		public TotemAdapter (Activity activity, List<Totem> list) {	
 			_activity = activity;
@@ -99,7 +99,7 @@ namespace TotemAndroid {
 		}
 
 		//ViewHolder for better performance
-		class ViewHolder : Java.Lang.Object {
+	    private class ViewHolder : Java.Lang.Object {
 			public TextView totem;
 			public CheckBox checkbox;
 			public TextView freq;

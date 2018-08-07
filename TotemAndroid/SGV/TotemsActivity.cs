@@ -9,19 +9,22 @@ using System.Collections.Generic;
 
 using TotemAppCore;
 
-namespace TotemAndroid {
+namespace TotemAndroid
+{
     [Activity (Label = "Totems", WindowSoftInputMode = SoftInput.StateAlwaysHidden)]			
-	public class TotemsActivity : BaseActivity {
-		TotemAdapter totemAdapter;
-		ListView allTotemListView;
-		List<Totem> totemList;
+	public class TotemsActivity : BaseActivity
+    {
+        private TotemAdapter totemAdapter;
+        private ListView allTotemListView;
+        private List<Totem> totemList;
 
-		EditText query;
-		TextView title;
-		ImageButton back;
-		ImageButton search;
+        private EditText query;
+        private TextView title;
+        private ImageButton back;
+        private ImageButton search;
 
-		protected override void OnCreate (Bundle bundle) {
+		protected override void OnCreate (Bundle bundle)
+		{
 			base.OnCreate (bundle);
 
 			SetContentView (Resource.Layout.AllTotems);
@@ -57,31 +60,41 @@ namespace TotemAndroid {
 
 			//hide keybaord when enter is pressed
 			query.EditorAction += (sender, e) => {
-				if (e.ActionId == ImeAction.Search) 
-					KeyboardHelper.HideKeyboard(this);
-				else
-					e.Handled = false;
+			    if (e.ActionId == ImeAction.Search)
+			    {
+			        KeyboardHelper.HideKeyboard(this);
+			    }
+			    else
+			    {
+			        e.Handled = false;
+			    }
 			};
 		}
 
-		protected override void OnResume ()	{
+		protected override void OnResume()
+		{
 			base.OnResume ();
 
 			_appController.NavigationController.GotoTotemDetailEvent+= StartDetailActivity;
 		}
 
-		protected override void OnPause ()	{
+		protected override void OnPause()
+		{
 			base.OnPause ();
 
 			_appController.NavigationController.GotoTotemDetailEvent-= StartDetailActivity;
 		}
 
 		//toggles the search bar
-		void ToggleSearch() {
-			if (query.Visibility == ViewStates.Visible) {
+        private void ToggleSearch()
+        {
+			if (query.Visibility == ViewStates.Visible)
+			{
 				HideSearch();
 				search.SetImageResource (Resource.Drawable.ic_search_white_24dp);
-			} else {
+			}
+			else
+			{
 				back.Visibility = ViewStates.Gone;
 				title.Visibility = ViewStates.Gone;
 				query.Visibility = ViewStates.Visible;
@@ -93,51 +106,63 @@ namespace TotemAndroid {
 		}
 
 		//hides the search bar
-		void HideSearch() {
+        private void HideSearch()
+        {
 			back.Visibility = ViewStates.Visible;
 			title.Visibility = ViewStates.Visible;
 			query.Visibility = ViewStates.Gone;
-			KeyboardHelper.HideKeyboard (this, query);
-			totemAdapter.UpdateData (_appController.Totems); 
-			totemAdapter.NotifyDataSetChanged ();
+			KeyboardHelper.HideKeyboard(this, query);
+			totemAdapter.UpdateData(_appController.Totems); 
+			totemAdapter.NotifyDataSetChanged();
 		}
 
 		//update list after every keystroke
-		void LiveSearch() {
-			query.AfterTextChanged += (sender, args) => Search ();
+        private void LiveSearch()
+        {
+			query.AfterTextChanged += (sender, args) => Search();
 		}
 
 		//shows only totems that are searched
-		void Search() {
-			totemList = _appController.FindTotemOpNaamOfSyn (query.Text);
+        private void Search()
+        {
+			totemList = _appController.FindTotemOpNaamOfSyn(query.Text);
 			totemAdapter.UpdateData (totemList); 
 			totemAdapter.NotifyDataSetChanged ();
-			if(query.Length() > 0)
-				allTotemListView.SetSelection (0);
-		}
+            if (query.Length() > 0)
+            {
+                allTotemListView.SetSelection(0);
+            }
+        }
 
 		//get DetailActivity of the totem that is clicked
 		//ID is passed as parameter
-		void ShowDetail(object sender, AdapterView.ItemClickEventArgs e) {
-			int pos = e.Position;
+        private void ShowDetail(object sender, AdapterView.ItemClickEventArgs e)
+        {
+			var pos = e.Position;
 			var item = totemAdapter.GetItemAtPosition(pos);
-			KeyboardHelper.HideKeyboard (this);
+			KeyboardHelper.HideKeyboard(this);
 
-			_appController.TotemSelected (item.Nid);
+			_appController.TotemSelected(item.Nid);
 		}
 
-		void StartDetailActivity() {
+        private void StartDetailActivity()
+        {
 			var detailActivity = new Intent(this, typeof(TotemDetailActivity));
 			StartActivity (detailActivity); 
 		}
 			
 		//return to full list and empty search field when 'back' is pressed
 		//this happens only when a search query is currently entered
-		public override void OnBackPressed() {
-			if (query.Visibility == ViewStates.Visible)
-				HideSearch ();
-			else
-				base.OnBackPressed ();
+		public override void OnBackPressed()
+		{
+		    if (query.Visibility == ViewStates.Visible)
+		    {
+		        HideSearch();
+		    }
+		    else
+		    {
+		        base.OnBackPressed();
+		    }
 		}
 	}
 }

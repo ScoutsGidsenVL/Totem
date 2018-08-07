@@ -37,7 +37,7 @@ namespace TotemAppIos {
 					userDefs.SetString (ser, "eigenschappen");
 					userDefs.Synchronize ();
 				} else {
-					_appController.AddOrUpdateEigenschappenSer (currProfiel.name, ser);
+					_appController.AddOrUpdateEigenschappenSer (currProfiel.Name, ser);
 				}
 			});
 		}
@@ -63,7 +63,7 @@ namespace TotemAppIos {
 			if (IsProfileNull)
 				ser = userDefs.StringForKey ("eigenschappen");
 			else
-				ser = _appController.GetSerFromProfile (currProfiel.name);
+				ser = _appController.GetSerFromProfile (currProfiel.Name);
 			
 			if (ser != null) {
 				_appController.Eigenschappen = JsonSerializer.DeserializeFromString <List<Eigenschap>> (ser);
@@ -92,7 +92,7 @@ namespace TotemAppIos {
 				userDefs.SetString (ser, "eigenschappen");
 				userDefs.Synchronize ();
 			} else {
-				_appController.AddOrUpdateEigenschappenSer (currProfiel.name, ser);
+				_appController.AddOrUpdateEigenschappenSer (currProfiel.Name, ser);
 			}
 		}
 
@@ -158,7 +158,7 @@ namespace TotemAppIos {
 		void SaveSelectionPopup() {
 			UIAlertController actionSheetAlert = UIAlertController.Create (null, null, UIAlertControllerStyle.ActionSheet);
 			foreach (Profiel p in _appController.DistinctProfielen) {
-				actionSheetAlert.AddAction (UIAlertAction.Create (p.name, UIAlertActionStyle.Default, action => saveSelectionToProfile (p.name)));
+				actionSheetAlert.AddAction (UIAlertAction.Create (p.Name, UIAlertActionStyle.Default, action => saveSelectionToProfile (p.Name)));
 			}
 
 			actionSheetAlert.AddAction (UIAlertAction.Create ("Nieuw profiel", UIAlertActionStyle.Default, action => addProfileDialog ()));

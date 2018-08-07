@@ -7,9 +7,11 @@ using Android.Widget;
 
 using TotemAppCore;
 
-namespace TotemAndroid {
+namespace TotemAndroid
+{
     [Activity (Label = "BaseActivity")]			
-	public abstract class BaseActivity : AppCompatActivity {
+	public abstract class BaseActivity : AppCompatActivity
+    {
 
 		protected TextView ActionBarTitle { get; set; }
 		protected ImageButton ActionBarBack { get; set; }
@@ -22,16 +24,18 @@ namespace TotemAndroid {
 
 		protected AppController _appController = AppController.Instance;
 
-		protected override void OnCreate (Bundle bundle) {
+		protected override void OnCreate(Bundle bundle)
+		{
 			base.OnCreate (bundle);
 			RequestedOrientation = ScreenOrientation.SensorPortrait;
 		}
 
-		protected void InitializeActionBar(Android.Support.V7.App.ActionBar ab) {
+		protected void InitializeActionBar(Android.Support.V7.App.ActionBar ab)
+		{
 			mActionBar = ab;
 
-			LayoutInflater mInflater = LayoutInflater.From (this);
-			View mCustomView = mInflater.Inflate (Resource.Layout.ActionBar, null);
+			var mInflater = LayoutInflater.From (this);
+			var mCustomView = mInflater.Inflate (Resource.Layout.ActionBar, null);
 
 			ActionBarTitle = mCustomView.FindViewById<TextView> (Resource.Id.title);
 			ActionBarBack = mCustomView.FindViewById<ImageButton> (Resource.Id.backButton);

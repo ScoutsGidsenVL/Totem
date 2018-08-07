@@ -25,7 +25,7 @@ namespace TotemAppIos {
 		}
 			
 		public void setData(bool check) {
-			lblProfile.Text = Profiel.name;
+			lblProfile.Text = Profiel.Name;
 			if (check) {
 				_checkBox = new BemCheckBox (new CoreGraphics.CGRect (0, 0, 20, 20), new MyBemCheckBoxDelegate(this));
 				vwCheckbox.Add (_checkBox);

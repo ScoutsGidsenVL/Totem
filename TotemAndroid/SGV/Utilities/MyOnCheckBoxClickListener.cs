@@ -6,7 +6,7 @@ namespace TotemAndroid {
 	public class MyOnCheckBoxClickListener {
 		
 		//WeakReference to context to avoid memory leak
-		readonly WeakReference<Context> mContext;
+	    private readonly WeakReference<Context> mContext;
 
 		public MyOnCheckBoxClickListener(Context context) {
 			mContext = new WeakReference<Context>(context);
